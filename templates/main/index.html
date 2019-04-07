@@ -1,0 +1,14 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+<title>index</title>
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+  <p>Welcome, {{ user.get_username }}. Thanks for logging in.</p>
+  <a href="{% url 'accounts:logout' %}">logout</a>
+{% else %}
+  <p>Welcome, new user. Please log in.</p>
+{% endif %}
+{% endblock %}

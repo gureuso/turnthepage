@@ -1,0 +1,27 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+<title>signup</title>
+{% endblock %}
+
+{% block body %}
+  <form class="login-form" method="post">
+    {% csrf_token %}
+    <img src="/static/images/title.png" class="login-form-img">
+    <input type="email" class="form-control form-control-lg" name="email" placeholder="Email" autofocus value="{{ form.email.value|default_if_none:"" }}">
+    <input type="text" class="form-control form-control-lg" name="username" placeholder="Username" value="{{ form.username.value|default_if_none:"" }}">
+    <input type="password" class="form-control form-control-lg" name="password" placeholder="Password">
+    <div class="invalid-feedback">
+      {% for key, value in form.errors.items %}
+        {{ key }}: {{ value|striptags }}
+      {% endfor %}
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Signup</button>
+    <a href="{% url 'accounts:login' %}">Login</a>
+  </form>
+  <script>
+    {% for key, value in form.errors.items %}
+      $("input[name='{{ key }}']").addClass("is-invalid");
+    {% endfor %}
+  </script>
+{% endblock %}

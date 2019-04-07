@@ -1,0 +1,64 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+  <title>book detail</title>
+  {% load humanize %}
+  {% load mathfilters %}
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'books:book_list' %}">Books</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">{{ book.id }}</li>
+            <li class="ml-auto">
+              <a href="{% url 'accounts:logout' %}">logout</a>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card">
+          <img src="{{ book.cover_url.url }}" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">{{ book.title }}</h5>
+            <div class="progress">
+              {% if book.page__number__sum %}
+                {% with div=book.page__number__sum|div:book.page_number %}
+                {% with result=100|mul:div|floatformat:"-1" %}
+                <div class="progress-bar" role="progressbar" style="width: {{ result }}%;" aria-valuenow="{{ result }}" aria-valuemin="0" aria-valuemax="100">{{ result }}%</div>
+                {% endwith %}
+                {% endwith %}
+              {% else %}
+                <div class="progress-bar" role="progressbar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+              {% endif %}
+            </div>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Price: {{ book.price|intcomma }}원</li>
+            <li class="list-group-item">Category: {{ book.category }}</li>
+            <li class="list-group-item">Author: {{ book.author }}</li>
+            <li class="list-group-item">Publisher: {{ book.publisher }}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-9">
+        {% for page in pages %}
+          <div class="card">
+            <div class="card-body">
+              {{ page.comment }}
+              <span class="float-right">{{ page.total_number }}/{{ book.page_number }}</span>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

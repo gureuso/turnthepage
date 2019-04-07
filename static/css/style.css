@@ -1,0 +1,11 @@
+.login-form {
+  width: 300px;
+  margin: auto;
+}
+
+.login-form-img {
+  display: block;
+  width: 200px;
+  margin: auto;
+  padding: 50px 0;
+}

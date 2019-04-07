@@ -1,0 +1,99 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+  <title>book create</title>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'books:book_list' %}">Books</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'books:book_create' %}">Upload</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active">
+            <br>
+            <form method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="form-group row">
+                <label for="book_title" class="col-sm-2 col-form-label">Title</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="book_title" name="title" value="{{ form.title.value|default_if_none:"" }}">
+                  <div class="invalid-feedback">{{ form.errors.title|striptags }}</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="book_author" class="col-sm-2 col-form-label">Author</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="book_author" name="author" value="{{ form.author.value|default_if_none:"" }}">
+                  <div class="invalid-feedback">{{ form.errors.author|striptags }}</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="book_publisher" class="col-sm-2 col-form-label">Publisher</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="book_publisher" name="publisher" value="{{ form.publisher.value|default_if_none:"" }}">
+                  <div class="invalid-feedback">{{ form.errors.publisher|striptags }}</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="book_category" class="col-sm-2 col-form-label">Category</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="book_category" name="category" value="{{ form.category.value|default_if_none:"" }}">
+                  <div class="invalid-feedback">{{ form.errors.category|striptags }}</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="book_price" class="col-sm-2 col-form-label">Price</label>
+                <div class="col-sm-5">
+                  <input type="number" class="form-control" id="book_price" name="price" value="{{ form.price.value|default_if_none:"" }}">
+                  <div class="invalid-feedback">{{ form.errors.price|striptags }}</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="book_page_number" class="col-sm-2 col-form-label">Page number</label>
+                <div class="col-sm-5">
+                  <input type="number" class="form-control" id="book_page_number" name="page_number" value="{{ form.page_number.value|default_if_none:"" }}">
+                  <div class="invalid-feedback">{{ form.errors.page_number|striptags }}</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="book_cover_url" class="col-sm-2 col-form-label">Cover image</label>
+                <div class="col-sm-5">
+                  <div class="custom-file">
+                    <input type="file" class="form-control custom-file-input" id="book_cover_url" name="cover_url" value="{{ form.cover_url.value|default_if_none:"" }}">
+                    <label class="custom-file-label" for="book_cover_url">Choose file</label>
+                    <div class="invalid-feedback">{{ form.errors.cover_url|striptags }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="book_target_date" class="col-sm-2 col-form-label">Target date</label>
+                <div class="col-sm-5">
+                  <input type="date" class="form-control" id="book_target_date" name="target_date" value="{{ form.target_date.value|default_if_none:"" }}">
+                  <div class="invalid-feedback">{{ form.errors.target_date|striptags }}</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-7">
+                  <button type="submit" class="btn btn-primary float-right">저장</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    {% for key, value in form.errors.items %}
+      $("#book_{{ key }}").addClass("is-invalid");
+    {% endfor %}
+  </script>
+{% endblock %}

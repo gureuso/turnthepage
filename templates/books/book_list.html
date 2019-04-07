@@ -1,0 +1,145 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+  <title>book list</title>
+  {% load humanize %}
+  {% load mathfilters %}
+  <style>
+    .card-body > a {
+      color: #212529;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'books:book_list' %}">Books</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'books:book_create' %}">Upload</a>
+          </li>
+          <li class="nav-item ml-auto">
+            <span class="navbar-text"><a href="{% url 'accounts:logout' %}">logout</a></span>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane active">
+            <div class="card-group">
+            {% for book in book_list %}
+              <div class="card" style="max-width: 300px">
+                <img src="{{ book.cover_url.url }}" class="card-img-top">
+                <div class="card-body">
+                  <a href="{% url 'books:book_detail' pk=book.id %}">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                  </a>
+                  <div class="progress">
+                    {% if book.page__number__sum %}
+                      {% with div=book.page__number__sum|div:book.page_number %}
+                      {% with result=100|mul:div|floatformat:"-1" %}
+                      <div class="progress-bar" role="progressbar" style="width: {{ result }}%;" aria-valuenow="{{ result }}" aria-valuemin="0" aria-valuemax="100">{{ result }}%</div>
+                      {% endwith %}
+                      {% endwith %}
+                    {% else %}
+                      <div class="progress-bar" role="progressbar" style="width: 0;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                    {% endif %}
+                  </div>
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">{{ book.price|intcomma }}원</li>
+                  <li class="list-group-item">{{ book.category }}</li>
+                  {% if book.page__number__sum != book.page_number %}
+                    <li class="list-group-item text-right">
+                      <a href="#" class="card-link" data-toggle="modal" data-target="#exampleModal"
+                         data-dict='{
+                         "book_title": "{{ book.title }}",
+                         "book_id": "{{ book.id }}",
+                         "book_page_number": "{{ book.page_number }}",
+                         "page_number": "{{ book.page__number__sum|default_if_none:0 }}"}'>
+                        진도나가기</a>
+                    </li>
+                  {% else %}
+                    <li class="list-group-item text-right">
+                      <span class="badge badge-secondary">Success</span>
+                    </li>
+                  {% endif %}
+                </ul>
+              </div>
+            {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="modal_book_title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal_book_title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <input type="hidden" id="modal_book_id">
+            <div class="form-group">
+              <label for="modal_page_total_number" class="col-form-label">Page number</label>
+              <div class="input-group">
+                <input type="number" class="form-control" id="modal_page_total_number" placeholder="마지막으로 읽은 쪽수" required>
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="modal_book_page_number"></span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="modal_page_comment" class="col-form-label">Comment</label>
+              <textarea class="form-control" id="modal_page_comment" required></textarea>
+            </div>
+            <div class="form-group float-right">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="submit" class="btn btn-primary">저장</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $('#exampleModal').on('show.bs.modal', function (event) {
+      let button = $(event.relatedTarget);
+      let data = button.data('dict');
+
+      let modal = $(this);
+      modal.find('#modal_book_title').text(data['book_title']);
+      modal.find('#modal_book_id').val(data['book_id']);
+
+      let page_number = data['page_number']+'/'+data['book_page_number'];
+      modal.find('#modal_book_page_number').text(page_number);
+
+      $("#modal_page_total_number").attr({"max": data['book_page_number'], "min": data['page_number']});
+    });
+    $("form").on("submit", function() {
+      let book_id = $('#modal_book_id').val();
+      let page_total_number = $('#modal_page_total_number').val();
+      let page_comment = $('#modal_page_comment').val();
+
+      let data = {total_number: page_total_number, comment: page_comment, csrfmiddlewaretoken: '{{ csrf_token }}'};
+      // hard coding 함수라도 만들어서 뿌려줘야 하나
+      let url = '/books/'+book_id+'/create';
+      $.post(url, data)
+        .done(function () {
+          window.location.href = "{% url 'books:book_list' %}";
+        })
+        .fail(function (data) {
+          alert('code: '+data.status);
+        })
+    });
+  </script>
+{% endblock %}
