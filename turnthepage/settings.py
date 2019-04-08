@@ -146,32 +146,6 @@ AUTHENTICATION_BACKENDS = [
     'turnthepage.backends.AuthBackend',
 ]
 AUTH_USER_MODEL = 'accounts.User'
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'formatters': {
-        'verbose': {
-            'format': '[contactor] %(levelname)s %(asctime)s %(message)s'
-        },
-    },
-    'handlers': {
-        # Send all messages to console
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        # This is the "catch all" logger
-        '': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        },
-    }
-}
+
+# SSL/HTTPS
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
