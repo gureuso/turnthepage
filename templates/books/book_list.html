@@ -31,7 +31,7 @@
           <div class="tab-pane active">
             <div class="card-group">
             {% for book in book_list %}
-              <div class="card" style="max-width: 300px">
+              <div class="card">
                 <img src="{{ book.cover_url.url }}" class="card-img-top">
                 <div class="card-body">
                   <a href="{% url 'books:book_detail' pk=book.id %}">

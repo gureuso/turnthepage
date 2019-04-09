@@ -9,3 +9,13 @@
   margin: auto;
   padding: 50px 0;
 }
+
+.card-group > .card {
+  max-width: 300px;
+}
+
+@media all and (max-width: 575px) {
+  .card-group > .card {
+    max-width: 530px;
+  }
+}
