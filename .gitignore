@@ -20,3 +20,4 @@ Thumbs.db
 #django
 */migrations/*.py
 !*/migrations/__init__.py
+static/media/*
