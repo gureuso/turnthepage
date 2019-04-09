@@ -14,6 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_DIR = os.path.join(BASE_DIR, '../')
 
 
 # Quick-start development settings - unsuitable for production
@@ -60,7 +61,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'templates')
+            os.path.join(PROJECT_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -129,12 +130,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(PROJECT_DIR, 'static'),
 ]
 
 # Media
 MEDIA_URL = '/static/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+MEDIA_ROOT = os.path.join(PROJECT_DIR, 'static/media')
 
 # Login
 LOGIN_REDIRECT_URL = '/'
@@ -146,6 +147,3 @@ AUTHENTICATION_BACKENDS = [
     'turnthepage.backends.AuthBackend',
 ]
 AUTH_USER_MODEL = 'accounts.User'
-
-# SSL/HTTPS
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
