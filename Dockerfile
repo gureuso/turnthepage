@@ -13,9 +13,6 @@ RUN git clone https://github.com/gureuso/turnthepage.git
 WORKDIR /root/turnthepage
 RUN pip install -r requirements.txt
 
-#env
-ENV DJANGO_SETTINGS_MODULE turnthepage.settings.product
-
 EXPOSE 8000
 
 CMD python manage.py makemigrations;python manage.py migrate;python manage.py runserver --insecure
