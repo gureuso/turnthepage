@@ -2,3 +2,5 @@ django
 mysqlclient
 Pillow
 django-mathfilters
+django-storages
+boto

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'mathfilters',
+    'storages',
     'main.apps.MainConfig',
     'accounts.apps.AccountsConfig',
     'books.apps.BooksConfig',
@@ -125,6 +126,16 @@ USE_L10N = True
 USE_TZ = True
 
 
+# Django Storages
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+
+AWS_LOCATION = 'static/media'
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'turnthepage')
+AWS_S3_CUSTOM_DOMAIN = '{0}.s3.amazonaws.com'.format(AWS_STORAGE_BUCKET_NAME)
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -134,8 +145,8 @@ STATICFILES_DIRS = [
 ]
 
 # Media
-MEDIA_URL = '/static/media/'
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'static/media')
+#MEDIA_URL = '/static/media/'
+#MEDIA_ROOT = os.path.join(PROJECT_DIR, 'static/media')
 
 # Login
 LOGIN_REDIRECT_URL = '/'
