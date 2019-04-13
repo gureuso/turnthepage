@@ -6,7 +6,7 @@ from turnthepage.commons import generate_filename
 
 class Category(models.Model):
     class Meta:
-        verbose_name_plural = ''
+        verbose_name_plural = 'Categories'
 
     name = models.CharField(max_length=10)
 
@@ -34,6 +34,7 @@ class Book(models.Model):
     target_date = models.DateField()
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
 
     objects = BookManger()
 
