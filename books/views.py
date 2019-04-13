@@ -15,7 +15,7 @@ from .forms import PageCreateForm
 class BookListView(LoginRequiredMixin, ListView):
     queryset = Book.objects.annotate(Sum('page__number'))
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['now'] = datetime.now()
         return context
@@ -33,7 +33,7 @@ class BookDetailView(LoginRequiredMixin, DetailView):
 
 class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
-    fields = ['title', 'author', 'publisher', 'price', 'page_number', 'cover_url', 'target_date']
+    fields = ['title', 'author', 'publisher', 'price', 'page_number', 'cover_url', 'target_date', 'category']
     template_name = 'books/book_create.html'
     success_url = reverse_lazy('books:book_list')
 
