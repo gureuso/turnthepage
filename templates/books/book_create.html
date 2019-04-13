@@ -45,8 +45,12 @@
               <div class="form-group row">
                 <label for="book_category" class="col-sm-2 col-form-label">Category</label>
                 <div class="col-sm-5">
-                  <input type="text" class="form-control" id="book_category" name="category" value="{{ form.category.value|default_if_none:"" }}">
-                  <div class="invalid-feedback">{{ form.errors.category|striptags }}</div>
+                  <select class="form-control" id="book_category" name="category">
+                    {% for category in categories %}
+                      <option value="category.id">{{ category.name }}</option>
+                    {% endfor %}
+                  </select>
+                  <div class="invalid-feedback"></div>
                 </div>
               </div>
               <div class="form-group row">

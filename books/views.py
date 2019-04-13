@@ -1,18 +1,24 @@
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from django.utils.datetime_safe import datetime
 from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .models import Book, Page
+from .models import Book, Page, Category
 from .forms import PageCreateForm
 
 
 class BookListView(LoginRequiredMixin, ListView):
     queryset = Book.objects.annotate(Sum('page__number'))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now'] = datetime.now()
+        return context
 
 
 class BookDetailView(LoginRequiredMixin, DetailView):
@@ -27,9 +33,14 @@ class BookDetailView(LoginRequiredMixin, DetailView):
 
 class BookCreateView(LoginRequiredMixin, CreateView):
     model = Book
-    fields = ['title', 'author', 'publisher', 'category', 'price', 'page_number', 'cover_url', 'target_date']
+    fields = ['title', 'author', 'publisher', 'price', 'page_number', 'cover_url', 'target_date']
     template_name = 'books/book_create.html'
     success_url = reverse_lazy('books:book_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user

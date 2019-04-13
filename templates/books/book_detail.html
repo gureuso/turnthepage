@@ -43,7 +43,7 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">Price: {{ book.price|intcomma }}원</li>
-            <li class="list-group-item">Category: {{ book.category }}</li>
+            <li class="list-group-item">Category: {{ book.category.name }}</li>
             <li class="list-group-item">Author: {{ book.author }}</li>
             <li class="list-group-item">Publisher: {{ book.publisher }}</li>
           </ul>

@@ -1,4 +1,7 @@
+import dateutil.parser
+
 from django import forms
+from django.utils.datetime_safe import datetime
 
 from .models import Book, Page
 
@@ -18,6 +21,10 @@ class PageCreateForm(forms.Form):
         book = Book.objects.get(pk=book_id)
         if not book:
             raise forms.ValidationError('Invalid book id')
+
+        target_date = dateutil.parser.parse(str(book.target_date))
+        if datetime.now() > target_date:
+            raise forms.ValidationError('Invalid target date')
 
         page = Page.objects.filter(book_id=book_id).last()
         if not page:
