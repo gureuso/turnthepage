@@ -4,6 +4,16 @@ from django.db import models, connection
 from turnthepage.commons import generate_filename
 
 
+class Category(models.Model):
+    class Meta:
+        verbose_name_plural = ''
+
+    name = models.CharField(max_length=10)
+
+    def __str__(self):
+        return 'id:{} name:{}'.format(self.id, self.name)
+
+
 class BookManger(models.Manager):
     def create_test_book(self, user):
         cursor = connection.cursor()
@@ -18,7 +28,6 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=20)
     publisher = models.CharField(max_length=20)
-    category = models.CharField(max_length=10)
     price = models.IntegerField()
     page_number = models.IntegerField()
     cover_url = models.ImageField(upload_to=generate_filename)
