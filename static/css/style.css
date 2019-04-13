@@ -11,7 +11,7 @@
 }
 
 .card-group > .card {
-  max-width: 300px;
+  min-width: 250px;
 }
 
 @media all and (max-width: 575px) {
