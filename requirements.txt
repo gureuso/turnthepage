@@ -4,3 +4,4 @@ Pillow
 django-mathfilters
 django-storages
 boto
+python-dateutil
