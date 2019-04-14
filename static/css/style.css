@@ -10,10 +10,6 @@
   padding: 50px 0;
 }
 
-.card-group > .card {
-  min-width: 250px;
-}
-
 @media all and (max-width: 575px) {
   .card-group > .card {
     max-width: 530px;
