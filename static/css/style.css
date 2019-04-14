@@ -10,8 +10,18 @@
   padding: 50px 0;
 }
 
-@media all and (max-width: 575px) {
-  .card-group > .card {
-    max-width: 530px;
+@media (min-width: 576px) {
+  .card-columns {
+    column-count: 2 !important;
+  }
+}
+@media (min-width: 768px) {
+  .card-columns {
+    column-count: 3 !important;;
+  }
+}
+@media (min-width: 992px) {
+  .card-columns {
+    column-count: 4 !important;;
   }
 }
