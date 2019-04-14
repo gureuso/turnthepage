@@ -59,10 +59,15 @@
                   {% elif now|date:'U' > book.target_date|date:'U'  %}
                     <li class="list-group-item text-right">
                       <span class="badge badge-secondary">시간초과</span>
+                      <a href="#" class="card-link" data-toggle="modal" data-target="#targetDateModal"
+                         data-dict='{
+                         "book_title": "{{ book.title }}",
+                         "book_id": "{{ book.id }}"}'>
+                        연장하기</a>
                     </li>
                   {% else %}
                     <li class="list-group-item text-right">
-                      <a href="#" class="card-link" data-toggle="modal" data-target="#exampleModal"
+                      <a href="#" class="card-link" data-toggle="modal" data-target="#pageModal"
                          data-dict='{
                          "book_title": "{{ book.title }}",
                          "book_id": "{{ book.id }}",
@@ -81,30 +86,55 @@
     </div>
   </div>
   <!-- Modal -->
-  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="modal_book_title" aria-hidden="true">
+  <div class="modal fade" id="pageModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modal_book_title"></h5>
+          <h5 class="modal-title"></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <form>
-            <input type="hidden" id="modal_book_id">
+            <input type="hidden" name="book_id">
             <div class="form-group">
-              <label for="modal_page_total_number" class="col-form-label">Page number</label>
+              <label for="page_total_number" class="col-form-label">Page number</label>
               <div class="input-group">
-                <input type="number" class="form-control" id="modal_page_total_number" placeholder="마지막으로 읽은 쪽수" required>
+                <input type="number" class="form-control" id="page_total_number" placeholder="마지막으로 읽은 쪽수" required>
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="modal_book_page_number"></span>
+                  <span class="input-group-text" id="book_page_number"></span>
                 </div>
               </div>
             </div>
             <div class="form-group">
-              <label for="modal_page_comment" class="col-form-label">Comment</label>
-              <textarea class="form-control" id="modal_page_comment" required></textarea>
+              <label for="page_comment" class="col-form-label">Comment</label>
+              <textarea class="form-control" id="page_comment" required></textarea>
+            </div>
+            <div class="form-group float-right">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+              <button type="submit" class="btn btn-primary">저장</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="targetDateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <input type="hidden" name="book_id">
+            <div class="form-group">
+              <label for="book_target_date" class="col-form-label">Target Date</label>
+              <input type="date" class="form-control" id="book_target_date">
             </div>
             <div class="form-group float-right">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -116,33 +146,55 @@
     </div>
   </div>
   <script>
-    $('#exampleModal').on('show.bs.modal', function (event) {
+    $('#targetDateModal, #pageModal').on('show.bs.modal', function (event) {
       let button = $(event.relatedTarget);
-      let data = button.data('dict');
+      let data = button.data("dict");
 
       let modal = $(this);
-      modal.find('#modal_book_title').text(data['book_title']);
-      modal.find('#modal_book_id').val(data['book_id']);
-
-      let page_number = data['page_number']+'/'+data['book_page_number'];
-      modal.find('#modal_book_page_number').text(page_number);
-
-      $("#modal_page_total_number").attr({"max": data['book_page_number'], "min": data['page_number']});
+      modal.find(".modal-title").text(data["book_title"]);
+      modal.find("input[name='book_id']").val(data["book_id"]);
     });
-    $("form").on("submit", function() {
-      let book_id = $('#modal_book_id').val();
-      let page_total_number = $('#modal_page_total_number').val();
-      let page_comment = $('#modal_page_comment').val();
 
-      let data = {total_number: page_total_number, comment: page_comment, csrfmiddlewaretoken: '{{ csrf_token }}'};
-      // hard coding 함수라도 만들어서 뿌려줘야 하나
-      let url = '/books/'+book_id+'/create';
+    $('#pageModal').on('show.bs.modal', function (event) {
+      let button = $(event.relatedTarget);
+      let data = button.data("dict");
+
+      let modal = $(this);
+      let page_number = data["page_number"]+"/"+data["book_page_number"];
+      modal.find('#book_page_number').text(page_number);
+
+      $("#page_total_number").attr({"max": data["book_page_number"], "min": data["page_number"]});
+    });
+    $("#pageModal").on("submit", function() {
+      let modal = $(this);
+      let book_id = modal.find("input[name='book_id']").val();
+      let page_total_number = $("#page_total_number").val();
+      let page_comment = $("#page_comment").val();
+
+      let data = {total_number: page_total_number, comment: page_comment, csrfmiddlewaretoken: "{{ csrf_token }}"};
+      let url = "/books/"+book_id+"/create";
       $.post(url, data)
         .done(function () {
           window.location.href = "{% url 'books:book_list' %}";
         })
         .fail(function (data) {
-          alert('code: '+data.status);
+          alert("code: "+data.status);
+        })
+    });
+
+    $("#targetDateModal").on("submit", function() {
+      let modal = $(this);
+      let book_id = modal.find("input[name='book_id']").val();
+      let book_target_date = $("#book_target_date").val();
+
+      let data = {target_date: book_target_date, csrfmiddlewaretoken: "{{ csrf_token }}"};
+      let url = "/books/"+book_id+"/renew";
+      $.post(url, data)
+        .done(function () {
+          window.location.href = "{% url 'books:book_list' %}";
+        })
+        .fail(function (data) {
+          alert("code: "+data.status);
         })
     });
   </script>

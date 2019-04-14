@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Book, Page, Category
-from .forms import PageCreateForm
+from .forms import PageCreateForm, BookRenewForm
 
 
 class BookListView(LoginRequiredMixin, ListView):
@@ -45,6 +45,20 @@ class BookCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+class BookRenewView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        data = request.POST.copy()
+        data['book_id'] = pk
+
+        form = BookRenewForm(data)
+        if not form.is_valid():
+            return HttpResponse(status=400)
+
+        target_date = form.cleaned_data['target_date']
+        Book.objects.filter(pk=pk).update(target_date=target_date)
+        return HttpResponse()
 
 
 class PageCreateView(LoginRequiredMixin, View):

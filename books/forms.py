@@ -6,6 +6,11 @@ from django.utils.datetime_safe import datetime
 from .models import Book, Page
 
 
+class BookRenewForm(forms.Form):
+    target_date = forms.DateField(required=True)
+    book_id = forms.IntegerField(required=True)
+
+
 class PageCreateForm(forms.Form):
     total_number = forms.IntegerField(required=True)
     comment = forms.CharField(widget=forms.Textarea, required=True)
