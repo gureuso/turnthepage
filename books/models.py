@@ -16,11 +16,13 @@ class Category(models.Model):
 
 class BookManger(models.Manager):
     def create_test_book(self, user):
+        category = Category.objects.create(name='IT')
         cursor = connection.cursor()
-        params = ['title', 'author', 'publisher', 'category', 10000, 100, 'test.jpg', '2019-02-19', user.id]
-        cursor.execute('INSERT INTO `books_book` (`title`, `author`, `publisher`, `category`, `price`, '
+        params = ['title', 'author', 'publisher', category.id, 10000, 100, 'test.jpg', '2099-02-19', user.id]
+        cursor.execute('INSERT INTO `books_book` (`title`, `author`, `publisher`, `category_id`, `price`, '
                        '`page_number`, `cover_url`, `target_date`, `user_id`) '
                        'VALUES (%s, %s, %s, %s ,%s ,%s, %s, %s, %s)', params)
+        cursor.close()
         return Book.objects.last()
 
 
