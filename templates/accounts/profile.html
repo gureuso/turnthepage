@@ -1,0 +1,68 @@
+{% extends "layout/base.html" %}
+
+{% block head %}
+  <title>book detail</title>
+  {% load humanize %}
+  {% load mathfilters %}
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+              <a href="{% url 'books:book_list' %}">Books</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">profile</li>
+            <li class="ml-auto">
+              <a href="{% url 'accounts:logout' %}">logout</a>
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-sm-5">
+        <div class="card">
+          <div class="profile-img">
+            <img src="/static/images/title.png" class="card-img-top">
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{ user.username }}</li>
+            <li class="list-group-item">
+              {{ user.email }}
+              {% if user.verified_email %}
+                <span class="badge badge-success">인증완료</span>
+              {% else %}
+                <a href="" onclick="verify_email()">
+                  <span class="badge badge-secondary">인증하기</span>
+                </a>
+              {% endif %}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-8 col-sm-7">
+      </div>
+    </div>
+  </div>
+  <script>
+    function verify_email() {
+      if(!confirm("이메일 인증을 하시겠습니까?")) {
+        return null;
+      }
+
+      let data = {csrfmiddlewaretoken: "{{ csrf_token }}"};
+      let url = "{% url 'accounts:verify_email' %}";
+      $.post(url, data)
+        .done(function () {
+          window.location.href = "{% url 'accounts:profile' %}";
+        })
+        .fail(function (data) {
+          alert("code: "+data.status);
+        })
+    }
+  </script>
+{% endblock %}

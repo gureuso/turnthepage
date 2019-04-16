@@ -17,6 +17,8 @@
             </li>
             <li class="breadcrumb-item active" aria-current="page">{{ book.id }}</li>
             <li class="ml-auto">
+              <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+              /
               <a href="{% url 'accounts:logout' %}">logout</a>
             </li>
           </ol>

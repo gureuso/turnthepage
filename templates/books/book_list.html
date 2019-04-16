@@ -23,7 +23,13 @@
             <a class="nav-link" href="{% url 'books:book_create' %}">Upload</a>
           </li>
           <li class="nav-item ml-auto">
-            <span class="navbar-text"><a href="{% url 'accounts:logout' %}">logout</a></span>
+            <span class="navbar-text">
+              <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
+            </span>
+            /
+            <span class="navbar-text">
+              <a href="{% url 'accounts:logout' %}">logout</a>
+            </span>
           </li>
         </ul>
 

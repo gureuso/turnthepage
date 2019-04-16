@@ -137,6 +137,7 @@ AWS_REGION = 'ap-northeast-2'
 AWS_S3_HOST = 's3.{0}.amazonaws.com'.format(AWS_REGION)
 AWS_S3_CUSTOM_DOMAIN = '{0}/{1}'.format(AWS_S3_HOST, AWS_STORAGE_BUCKET_NAME)
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
@@ -145,17 +146,26 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, 'static'),
 ]
 
+
 # Media
 #MEDIA_URL = '/static/media/'
 #MEDIA_ROOT = os.path.join(PROJECT_DIR, 'static/media')
+
 
 # Login
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/accounts/login'
 LOGOUT_REDIRECT_URL = '/accounts/login'
 
+
 # Auth
 AUTHENTICATION_BACKENDS = [
     'turnthepage.backends.AuthBackend',
 ]
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# Email
+EMAIL_BACKEND = 'django_ses.SESBackend'
+AWS_SES_REGION_NAME = 'us-west-2'
+AWS_SES_REGION_ENDPOINT = 'email.us-west-2.amazonaws.com'

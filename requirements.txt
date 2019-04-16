@@ -1,7 +1,8 @@
+boto
 django
-mysqlclient
-Pillow
 django-mathfilters
 django-storages
-boto
+django-ses
+mysqlclient
+Pillow
 python-dateutil
