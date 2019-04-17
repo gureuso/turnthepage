@@ -58,7 +58,7 @@
       let url = "{% url 'accounts:verify_email' %}";
       $.post(url, data)
         .done(function () {
-          window.location.href = "{% url 'accounts:profile' %}";
+          alert("이메일을 확인해주세요:)");
         })
         .fail(function (data) {
           alert("code: "+data.status);
