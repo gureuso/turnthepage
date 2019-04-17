@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from django.core.exceptions import SuspiciousOperation
 from django.core.mail import send_mail
 from django.contrib.auth import views as auth_views
 from django.conf import settings
@@ -57,11 +58,9 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 class VerifyEmailView(LoginRequiredMixin, View):
     def get(self, request):
-        data = request.GET.copy()
-
-        form = VerifyEmailForm(data)
+        form = VerifyEmailForm(request.GET)
         if not form.is_valid():
-            return HttpResponse(status=400)
+            raise SuspiciousOperation()
 
         request.user.verified_email = True
         request.user.save()
