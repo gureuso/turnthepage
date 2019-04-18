@@ -50,6 +50,21 @@
         </div>
       </div>
       <div class="col-lg-8 col-sm-7">
+        {% for coupon in coupons %}
+          <div class="card mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img src="{{ coupon.coupon_url.url }}" class="card-img">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">{{ coupon.name }}</h5>
+                  <p class="card-text">{{ coupon.text }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
       </div>
     </div>
   </div>

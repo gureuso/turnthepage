@@ -4,6 +4,25 @@ from django.db import models, connection
 from turnthepage.commons import generate_filename
 
 
+class AdminCoupon(models.Model):
+    name = models.CharField(max_length=20)
+    text = models.CharField(max_length=100, null=True)
+    coupon_url = models.ImageField(upload_to=generate_filename)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'id:{} name:{}'.format(self.id, self.name)
+
+
+class Coupon(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    admin_coupon = models.ForeignKey(AdminCoupon, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'id:{} name:{}'.format(self.id, self.admin_coupon.name)
+
+
 class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
