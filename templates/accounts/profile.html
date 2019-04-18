@@ -54,12 +54,13 @@
           <div class="card mb-3">
             <div class="row no-gutters">
               <div class="col-md-4">
-                <img src="{{ coupon.coupon_url.url }}" class="card-img">
+                <img src="{{ coupon.admin_coupon.coupon_url.url }}" class="card-img">
               </div>
               <div class="col-md-8">
                 <div class="card-body">
-                  <h5 class="card-title">{{ coupon.name }}</h5>
-                  <p class="card-text">{{ coupon.text }}</p>
+                  <h5 class="card-title">{{ coupon.admin_coupon.name }}</h5>
+                  <p class="card-text">{{ coupon.admin_coupon.text }}</p>
+                  <p class="card-text">"{{ coupon.book.title }}" 책을 다읽고 얻은 쿠폰입니다.</p>
                 </div>
               </div>
             </div>

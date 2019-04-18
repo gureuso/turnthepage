@@ -4,25 +4,6 @@ from django.db import models, connection
 from turnthepage.commons import generate_filename
 
 
-class AdminCoupon(models.Model):
-    name = models.CharField(max_length=20)
-    text = models.CharField(max_length=100, null=True)
-    coupon_url = models.ImageField(upload_to=generate_filename)
-
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'id:{} name:{}'.format(self.id, self.name)
-
-
-class Coupon(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    admin_coupon = models.ForeignKey(AdminCoupon, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return 'id:{} name:{}'.format(self.id, self.admin_coupon.name)
-
-
 class Category(models.Model):
     class Meta:
         verbose_name_plural = 'Categories'
@@ -73,3 +54,33 @@ class Page(models.Model):
 
     def __str__(self):
         return 'id:{} book_id:{} user_id:{}'.format(self.id, self.book_id, self.user_id)
+
+
+class AdminCoupon(models.Model):
+    name = models.CharField(max_length=20)
+    text = models.CharField(max_length=100, null=True)
+    coupon_url = models.ImageField(upload_to=generate_filename)
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'id:{} name:{}'.format(self.id, self.name)
+
+
+class CouponManger(models.Manager):
+    def create_coupon(self, form, book, user):
+        if book.page_number != form.cleaned_data['total_number']:
+            return
+        admin_coupon = AdminCoupon.objects.last()
+        Coupon.objects.create(admin_coupon=admin_coupon, user=user, book=book)
+
+
+class Coupon(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    admin_coupon = models.ForeignKey(AdminCoupon, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
+
+    objects = CouponManger()
+
+    def __str__(self):
+        return 'id:{} book_id:{} name:{}'.format(self.id, self.book_id, self.admin_coupon.name)

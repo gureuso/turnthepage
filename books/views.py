@@ -9,7 +9,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from turnthepage.emails import WinAPrizeEmail
-from .models import Book, Page, Category
+from .models import Book, Page, Category, Coupon
 from .forms import PageCreateForm, BookRenewForm
 
 
@@ -77,5 +77,6 @@ class PageCreateView(LoginRequiredMixin, View):
         total_number = form.cleaned_data['total_number']
 
         WinAPrizeEmail(request=request, form=form, user=request.user, book=book).send_mail()
+        Coupon.objects.create_coupon(form=form, book=book, user=request.user)
         Page.objects.create(number=number, total_number=total_number, comment=comment, user=request.user, book=book)
         return HttpResponse()
