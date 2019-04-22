@@ -59,11 +59,14 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['coupons'] = Coupon.objects.filter(user_id=self.request.user.id, admin_coupon_id=F('admin_coupon_id'))
         context['book_all_cnt'] = Book.objects.count()
-        context['book_success_cnt'] = Book.objects.filter(page_number=F('page__total_number')).count()
-        context['book_fail_cnt'] = Book.objects.filter(target_date__lt=datetime.utcnow().strftime('%Y-%m-%d')).count()
-        context['coupons'] = Coupon.objects.filter(user_id=self.request.user.id,
-                                                   admin_coupon_id=F('admin_coupon_id'))
+
+        book_success = Book.objects.filter(page_number=F('page__total_number'))
+        context['book_success_cnt'] = book_success.count()
+        book_success_ids = book_success.values_list('id', flat=True)
+
+        context['book_fail_cnt'] = Book.objects.exclude(id__in=book_success_ids).filter(target_date__lt=datetime.utcnow().strftime('%Y-%m-%d')).count()
         return context
 
 
