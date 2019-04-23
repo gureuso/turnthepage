@@ -16,7 +16,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 
 from accounts.models import Token
-from books.models import Book, AdminCoupon, Coupon
+from books.models import Book, Coupon
 from turnthepage.commons import get_random_string
 from turnthepage.decorators import already_logged_in
 from turnthepage.emails import VerifyEmail
@@ -64,9 +64,10 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
         book_success = Book.objects.filter(page_number=F('page__total_number'))
         context['book_success_cnt'] = book_success.count()
-        book_success_ids = book_success.values_list('id', flat=True)
 
-        context['book_fail_cnt'] = Book.objects.exclude(id__in=book_success_ids).filter(target_date__lt=datetime.utcnow().strftime('%Y-%m-%d')).count()
+        book_success_ids = book_success.values_list('id', flat=True)
+        context['book_fail_cnt'] = Book.objects.exclude(id__in=book_success_ids)\
+            .filter(target_date__lt=datetime.utcnow().strftime('%Y-%m-%d')).count()
         return context
 
 
