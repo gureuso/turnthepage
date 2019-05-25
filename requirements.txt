@@ -6,3 +6,4 @@ django-ses
 mysqlclient
 Pillow
 python-dateutil
+gunicorn
