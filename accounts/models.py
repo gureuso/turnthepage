@@ -3,7 +3,7 @@ from django.db import models
 from django.contrib.auth.models import UserManager, AbstractUser
 from django.utils.datetime_safe import datetime
 
-from turnthepage.constants import USERNAME, EMAIL, PASSWORD
+from conf.constants import USERNAME, EMAIL, PASSWORD
 
 
 class MyUserManager(UserManager):

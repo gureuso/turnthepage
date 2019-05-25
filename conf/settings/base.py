@@ -56,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'turnthepage.urls'
+ROOT_URLCONF = 'conf.urls'
 
 TEMPLATES = [
     {
@@ -76,7 +76,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'turnthepage.wsgi.application'
+WSGI_APPLICATION = 'conf.wsgi.application'
 
 
 # Database
@@ -160,7 +160,7 @@ LOGOUT_REDIRECT_URL = '/accounts/login'
 
 # Auth
 AUTHENTICATION_BACKENDS = [
-    'turnthepage.backends.AuthBackend',
+    'conf.backends.AuthBackend',
 ]
 AUTH_USER_MODEL = 'accounts.User'
 

@@ -1,6 +1,6 @@
 from django.core.mail import send_mail
 
-from turnthepage.constants import DEFAULT_FROM_EMAIL
+from conf.constants import DEFAULT_FROM_EMAIL
 
 
 def get_html_message(body):

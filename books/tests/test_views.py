@@ -2,8 +2,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
 
 from books.models import Book, Page
-from turnthepage.constants import USERNAME, PASSWORD
-from turnthepage.tests import BaseTestCase
+from conf.constants import USERNAME, PASSWORD
+from conf.tests import BaseTestCase
 
 
 class TestBookListView(BaseTestCase):

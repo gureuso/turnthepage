@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import turnthepage.commons
+import conf.commons
 
 
 class Migration(migrations.Migration):
@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('publisher', models.CharField(max_length=20)),
                 ('price', models.IntegerField()),
                 ('page_number', models.IntegerField()),
-                ('cover_url', models.ImageField(upload_to=turnthepage.commons.generate_filename)),
+                ('cover_url', models.ImageField(upload_to=conf.commons.generate_filename)),
                 ('target_date', models.DateField()),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

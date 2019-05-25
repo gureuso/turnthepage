@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'turnthepage.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'conf.settings.development')
 
 application = get_wsgi_application()

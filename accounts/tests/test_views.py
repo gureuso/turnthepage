@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.urls import reverse
 
-from turnthepage.constants import USERNAME, EMAIL, PASSWORD
-from turnthepage.tests import BaseTestCase
+from conf.constants import USERNAME, EMAIL, PASSWORD
+from conf.tests import BaseTestCase
 
 
 class SignupViewTest(TestCase):

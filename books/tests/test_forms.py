@@ -1,6 +1,6 @@
 from books.forms import PageCreateForm
 from books.models import Book, Page
-from turnthepage.tests import BaseTestCase
+from conf.tests import BaseTestCase
 
 
 class PageCreateFormTest(BaseTestCase):

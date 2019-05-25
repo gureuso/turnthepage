@@ -1,6 +1,6 @@
 from accounts.forms import SignupForm
-from turnthepage.commons import get_random_string
-from turnthepage.tests import BaseTestCase
+from conf.commons import get_random_string
+from conf.tests import BaseTestCase
 
 
 class SignupFormTest(BaseTestCase):

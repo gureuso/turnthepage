@@ -17,9 +17,9 @@ from django.views.generic.edit import FormView
 
 from accounts.models import Token
 from books.models import Book, Coupon
-from turnthepage.commons import get_random_string
-from turnthepage.decorators import already_logged_in
-from turnthepage.emails import VerifyEmail
+from conf.commons import get_random_string
+from conf.decorators import already_logged_in
+from conf.emails import VerifyEmail
 from .forms import SignupForm, VerifyEmailForm
 
 

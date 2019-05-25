@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models, connection
 
-from turnthepage.commons import generate_filename
+from conf.commons import generate_filename
 
 
 class Category(models.Model):

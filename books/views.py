@@ -8,7 +8,7 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from turnthepage.emails import WinAPrizeEmail
+from conf.emails import WinAPrizeEmail
 from .models import Book, Page, Category, Coupon
 from .forms import PageCreateForm, BookRenewForm
 
