@@ -142,9 +142,6 @@ AWS_S3_CUSTOM_DOMAIN = '{0}/{1}'.format(AWS_S3_HOST, AWS_STORAGE_BUCKET_NAME)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'static'),
-]
 
 
 # Media
