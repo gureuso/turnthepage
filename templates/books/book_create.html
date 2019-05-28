@@ -80,7 +80,7 @@
                 <label for="book_cover_url" class="col-sm-2 col-form-label">Cover image</label>
                 <div class="col-sm-5">
                   <div class="custom-file">
-                    <input type="file" class="form-control custom-file-input" id="book_cover_url" name="cover_url" value="{{ form.cover_url.value|default_if_none:"" }}">
+                    <input type="file" class="custom-file-input" id="book_cover_url" name="cover_url">
                     <label class="custom-file-label" for="book_cover_url">Choose file</label>
                     <div class="invalid-feedback">{{ form.errors.cover_url|striptags }}</div>
                   </div>
