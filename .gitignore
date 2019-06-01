@@ -19,3 +19,4 @@ Thumbs.db
 
 #django
 static/media/*
+static/admin
