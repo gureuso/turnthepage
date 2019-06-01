@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+from conf.config import JsonConfig
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-PROJECT_DIR = os.path.join(BASE_DIR, '../')
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -62,7 +64,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(PROJECT_DIR, 'templates')
+            os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -85,10 +87,10 @@ WSGI_APPLICATION = 'conf.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DB_USER_NAME', 'turnthepage'),
-        'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'USER': os.environ.get('DB_USER_NAME', 'root'),
-        'PASSWORD': os.environ.get('DB_USER_PASSWD', 'password'),
+        'NAME': JsonConfig.get_data('DB_NAME', 'turnthepage'),
+        'HOST': JsonConfig.get_data('DB_HOST', 'localhost'),
+        'USER': JsonConfig.get_data('DB_USER_NAME', 'root'),
+        'PASSWORD': JsonConfig.get_data('DB_USER_PASSWD', 'password'),
     }
 }
 
@@ -130,9 +132,9 @@ USE_TZ = True
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 AWS_LOCATION = 'static/media'
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', 'turnthepage')
+AWS_ACCESS_KEY_ID = JsonConfig.get_data('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = JsonConfig.get_data('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = JsonConfig.get_data('AWS_STORAGE_BUCKET_NAME', 'turnthepage')
 AWS_REGION = 'ap-northeast-2'
 AWS_S3_HOST = 's3.{0}.amazonaws.com'.format(AWS_REGION)
 AWS_S3_CUSTOM_DOMAIN = '{0}/{1}'.format(AWS_S3_HOST, AWS_STORAGE_BUCKET_NAME)
@@ -146,7 +148,7 @@ STATIC_URL = '/static/'
 
 # Media
 #MEDIA_URL = '/static/media/'
-#MEDIA_ROOT = os.path.join(PROJECT_DIR, 'static/media')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
 
 
 # Login
