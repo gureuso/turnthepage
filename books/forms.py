@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import dateutil.parser
 
 from django import forms
@@ -27,7 +29,7 @@ class PageCreateForm(forms.Form):
         if not book:
             raise forms.ValidationError('Invalid book id')
 
-        target_date = dateutil.parser.parse(str(book.target_date))
+        target_date = dateutil.parser.parse(str(book.target_date)) + timedelta(days=1)
         if datetime.now() > target_date:
             raise forms.ValidationError('Invalid target date')
 
