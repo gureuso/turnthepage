@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import UserManager, AbstractUser
-from django.utils.datetime_safe import datetime
 
 from conf.constants import USERNAME, EMAIL, PASSWORD
 

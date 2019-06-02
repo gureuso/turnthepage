@@ -58,11 +58,12 @@
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item">{{ book.price|intcomma }}원</li>
                   <li class="list-group-item">{{ book.category.name }}</li>
+                  {% now "U" as now %}
                   {% if book.page__number__sum == book.page_number %}
                     <li class="list-group-item text-right">
                       <span class="badge badge-success">성공</span>
                     </li>
-                  {% elif now|date:'U' > book.target_date|date:'U'  %}
+                  {% elif now > book.target_date|date:'U'  %}
                     <li class="list-group-item text-right">
                       <span class="badge badge-secondary">시간초과</span>
                       <a href="#" class="card-link" data-toggle="modal" data-target="#targetDateModal"

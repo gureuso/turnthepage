@@ -15,10 +15,10 @@ class Category(models.Model):
 
 
 class BookManger(models.Manager):
-    def create_test_book(self, user):
-        category = Category.objects.create(name='IT')
+    def create_test_book(self, user, target_date='2099-02-19'):
+        category = Category.objects.filter(name='IT').first() or Category.objects.create(name='IT')
         cursor = connection.cursor()
-        params = ['title', 'author', 'publisher', category.id, 10000, 100, 'test.jpg', '2099-02-19', user.id]
+        params = ['title', 'author', 'publisher', category.id, 10000, 100, 'test.jpg', target_date, user.id]
         cursor.execute('INSERT INTO `books_book` (`title`, `author`, `publisher`, `category_id`, `price`, '
                        '`page_number`, `cover_url`, `target_date`, `user_id`) '
                        'VALUES (%s, %s, %s, %s ,%s ,%s, %s, %s, %s)', params)

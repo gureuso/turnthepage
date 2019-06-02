@@ -33,3 +33,9 @@ class PageCreateFormTest(BaseTestCase):
         data = {'total_number': 80, 'comment': self.comment, 'book_id': self.book.id}
         form = PageCreateForm(data=data)
         self.assertFalse(form.is_valid())
+
+    def test_over_target_date(self):
+        book = Book.objects.create_test_book(user=self.user, target_date='2019-06-02')
+        data = {'total_number': 100, 'comment': self.comment, 'book_id': book.id}
+        form = PageCreateForm(data=data)
+        self.assertFalse(form.is_valid())

@@ -1,11 +1,20 @@
-from datetime import timedelta
-
 import dateutil.parser
+from datetime import timedelta
 
 from django import forms
 from django.utils.datetime_safe import datetime
 
 from .models import Book, Page
+
+
+class BookCreateForm(forms.ModelForm):
+    class Meta:
+        model = Book
+        fields = ['title', 'author', 'publisher', 'price', 'page_number', 'cover_url', 'target_date', 'category']
+
+    def clean_target_date(self):
+        target_date = self.data['target_date']
+        return datetime.strptime(target_date, '%Y-%m-%d') + timedelta(days=1)
 
 
 class BookRenewForm(forms.Form):
@@ -29,7 +38,7 @@ class PageCreateForm(forms.Form):
         if not book:
             raise forms.ValidationError('Invalid book id')
 
-        target_date = dateutil.parser.parse(str(book.target_date)) + timedelta(days=1)
+        target_date = dateutil.parser.parse(str(book.target_date))
         if datetime.now() > target_date:
             raise forms.ValidationError('Invalid target date')
 

@@ -1,25 +1,19 @@
 from django.db.models import Sum
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.utils.datetime_safe import datetime
 from django.views import View
 from django.views.generic import DetailView
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from conf.emails import WinAPrizeEmail
 from .models import Book, Page, Category, Coupon
-from .forms import PageCreateForm, BookRenewForm
+from .forms import PageCreateForm, BookRenewForm, BookCreateForm
 
 
 class BookListView(LoginRequiredMixin, ListView):
     queryset = Book.objects.annotate(Sum('page__number'))
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['now'] = datetime.strptime(datetime.utcnow().strftime('%Y%m%d'), '%Y%m%d')
-        return context
 
 
 class BookDetailView(LoginRequiredMixin, DetailView):
@@ -32,20 +26,23 @@ class BookDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
-class BookCreateView(LoginRequiredMixin, CreateView):
-    model = Book
-    fields = ['title', 'author', 'publisher', 'price', 'page_number', 'cover_url', 'target_date', 'category']
+class BookCreateView(LoginRequiredMixin, FormView):
+    form_class = BookCreateForm
     template_name = 'books/book_create.html'
     success_url = reverse_lazy('books:book_list')
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        data = form.cleaned_data
+        Book.objects.create(title=data['title'], author=data['author'], publisher=data['publisher'], price=data['price'],
+                            page_number=data['page_number'], cover_url=data['cover_url'], target_date=data['target_date'],
+                            category=data['category'], user=self.request.user)
+        return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['categories'] = Category.objects.all()
         return context
-
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        return super().form_valid(form)
 
 
 class BookRenewView(LoginRequiredMixin, View):
