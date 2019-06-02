@@ -67,7 +67,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
         book_success_ids = book_success.values_list('id', flat=True)
         context['book_fail_cnt'] = Book.objects.exclude(id__in=book_success_ids)\
-            .filter(target_date__lt=datetime.utcnow().strftime('%Y-%m-%d')).count()
+            .filter(target_date__lte=datetime.now().strftime('%Y-%m-%d')).count()
         return context
 
 
